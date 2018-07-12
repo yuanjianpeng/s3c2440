@@ -1,0 +1,105 @@
+# Herbert Yuan <yuanjp@hust.edu.cn>
+# 2018/1/15
+
+
+Build steps:
+============================
+	make MODEL=jz2440 toolchain
+	make MODEL=jz2440 hosttools
+	make MODEL=jz2440 u-boot
+	make MODEL=jz2440 kernel
+	make MODEL=jz2440 userspace
+	make MODEL=jz2440 image
+or simply:
+	make MODEL=jz2440
+
+NOTE:
+the MODEL will be cached to `.oldmodel"
+so the next time no need to input again.
+	
+
+NAND FLASH Layout
+============================
+uboot spl     | block 0
+rescue uboot  | block 1-7
+uboot         | block 8-15
+ENV           | block 15-23
+kernel        | determined by ENV
+rootfs        | determined by ENV
+factory-data  | determined by ENV
+user-data     | determined by ENV
+BBT           | last 1MiB bad block table
+
+
+uboot header
+============================
+struct
+{
+	char 	magic[8]; 		// "uboot\0123\0765"
+	uint32 	seq;			// 
+	uint32 	image_len;		// ""
+	uint32	offset;			//
+	uint32 	crc;			// 
+}
+
+
+ENV:
+baudrate=115200
+bootargs=noinitrd rootfstype=ubifs ubi.mtd=2 root=ubi0:rootfs init=/linuxrc console=ttySAC0,115200 $mtdparts
+bootcmd=nboot kernel; bootm
+bootdelay=2
+ethact=dm9000
+ethaddr=08:00:3e:26:0a:5b
+ipaddr=192.168.3.90
+mtddevname=uboot
+mtddevnum=0
+mtdids=nand0=NAND
+mtdparts=mtdparts=NAND:1m@1m(uboot),8m@3m(kernel),50m(rootfs),8m@200m(data-factory),32m(data)
+partition=nand0,0
+serverip=192.168.3.100
+stderr=serial
+stdin=serial
+stdout=serial
+
+baudrate=115200
+bootargs=noinitrd rootfstype=ubifs ubi.mtd=2 root=ubi0:rootfs init=/sbin/init console=ttySAC0,115200 mtdparts=NAND:1m@1m(uboot),8m@3m(kernel),50m(rootfs),8m@200m(data-factory),32m(data)
+bootcmd=nboot kernel; bootm
+bootdelay=2
+ethact=dm9000
+ethaddr=08:00:3e:26:0a:5b
+fileaddr=30000000
+filesize=2c0000
+ipaddr=192.168.3.90
+mtddevname=uboot
+mtddevnum=0
+mtdids=nand0=NAND
+mtdparts=mtdparts=NAND:1m@1m(uboot),8m@3m(kernel),50m(rootfs),8m@200m(data-factory),32m(data)
+partition=nand0,0
+serverip=192.168.3.100
+stderr=serial
+stdin=serial
+stdout=serial
+upkernel=tftpboot uImage; nand erase.part kernel; nand write 30000000 kernel ${filesize}
+uprootfs=tftpboot ubi.img; nand erase.part rootfs; nand write 30000000 rootfs ${filesize}
+
+
+setenv baudrate 115200
+setenv bootargs noinitrd rootfstype=ubifs ubi.mtd=2 root=ubi0:rootfs init=/sbin/init console=ttySAC0,115200 mtdparts=NAND:1m@1m(uboot),8m@3m(kernel),50m(rootfs),8m@200m(data-factory),32m(data)
+setenv bootcmd 'nboot kernel; bootm'
+setenv bootdelay=2
+setenv ethact=dm9000
+setenv ethaddr=08:00:3e:26:0a:5b
+setenv fileaddr=30000000
+setenv filesize=2c0000
+setenv ipaddr 192.168.3.90
+setenv mtddevname uboot
+setenv mtddevnum 0
+setenv mtdids nand0=NAND
+setenv mtdparts mtdparts=NAND:1m@1m(uboot),8m@3m(kernel),50m(rootfs),8m@200m(data-factory),32m(data)
+setenv partition nand0,0
+setenv serverip 192.168.3.100
+setenv stderr=serial
+setenv stdin=serial
+setenv stdout=serial
+setenv upkernel 'tftpboot uImage; nand erase.part kernel; nand write 30000000 kernel ${filesize}'
+setenv uprootfs 'tftpboot ubi.img; nand erase.part rootfs; nand write 30000000 rootfs ${filesize}'
