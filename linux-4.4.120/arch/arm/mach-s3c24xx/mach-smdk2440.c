@@ -164,7 +164,12 @@ static void __init smdk2440_map_io(void)
 
 static void __init smdk2440_init_time(void)
 {
+    /* jz2440 has 12MHz XTIpll */
+#if 0
 	s3c2440_init_clocks(16934400);
+#else
+	s3c2440_init_clocks(12000000);
+#endif
 	samsung_timer_init();
 }
 
