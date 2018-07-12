@@ -1,0 +1,6 @@
+JZ2440 BOARD
+M:  Herbert Yuan <yuanjp@hust.edu.cn>
+S:	Maintained
+F:	board/jz2440/
+F:	include/configs/jz2440.h
+F:	configs/jz2440_defconfig

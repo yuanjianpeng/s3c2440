@@ -14,7 +14,12 @@
 #include <asm/io.h>
 
 #ifndef CONFIG_WD_PERIOD
+#ifndef CONFIG_TARGET_JZ2440 
 # define CONFIG_WD_PERIOD	(10 * 1000 * 1000)	/* 10 seconds default */
+#else
+extern unsigned long get_timer_period(void);
+# define CONFIG_WD_PERIOD  get_timer_period() 
+#endif
 #endif
 
 DECLARE_GLOBAL_DATA_PTR;

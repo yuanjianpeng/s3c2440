@@ -32,6 +32,11 @@ struct arch_global_data {
 #endif
 	/* "static data" needed by most of timer.c on ARM platforms */
 	unsigned long timer_rate_hz;
+#ifdef CONFIG_TARGET_JZ2440
+    uint64_t ts;
+    unsigned long previous_ts;
+    unsigned long delay_timer_period;
+#endif
 	unsigned int tbu;
 	unsigned int tbl;
 	unsigned long lastinc;

@@ -299,10 +299,14 @@ void cli_simple_loop(void)
 		else
 			rc = run_command_repeatable(lastcommand, flag);
 
+#if defined(CONFIG_TARGET_JZ2440)
+		lastcommand[0] = 0;
+#else
 		if (rc <= 0) {
 			/* invalid command or not repeatable, forget it */
 			lastcommand[0] = 0;
 		}
+#endif
 	}
 }
 

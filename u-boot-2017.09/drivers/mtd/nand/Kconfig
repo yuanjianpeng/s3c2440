@@ -128,6 +128,13 @@ config NAND_ZYNQ
 	  This enables Nand driver support for Nand flash controller
 	  found on Zynq SoC.
 
+config NAND_S3C2440
+    bool "Support for s3c2440 Nand controller"
+    imply CMD_NAND
+    help
+        This enales Nand driver support for Nand flash controller
+        found on S3c2440 SoC
+
 comment "Generic NAND options"
 
 # Enhance depends when converting drivers to Kconfig which use this config

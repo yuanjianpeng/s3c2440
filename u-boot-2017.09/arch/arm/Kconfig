@@ -300,6 +300,11 @@ config TARGET_EDB93XX
 	bool "Support edb93xx"
 	select CPU_ARM920T
 
+config TARGET_JZ2440
+	bool "Support jz2440"
+	select CPU_ARM920T
+	select SUPPORT_SPL
+	
 config TARGET_ASPENITE
 	bool "Support aspenite"
 	select CPU_ARM926EJS
@@ -1239,6 +1244,7 @@ source "board/vscom/baltos/Kconfig"
 source "board/woodburn/Kconfig"
 source "board/work-microwave/work_92105/Kconfig"
 source "board/zipitz2/Kconfig"
+source "board/jz2440/Kconfig"
 
 source "arch/arm/Kconfig.debug"
 

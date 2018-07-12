@@ -53,3 +53,5 @@ obj-$(CONFIG_MPC8XX_CONS) += serial_mpc8xx.o
 ifndef CONFIG_SPL_BUILD
 obj-$(CONFIG_USB_TTY) += usbtty.o
 endif
+
+obj-$(CONFIG_S3C2440_UART) += serial_s3c2440.o
